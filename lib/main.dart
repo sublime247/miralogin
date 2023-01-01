@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
@@ -15,6 +18,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   var _isObscure = true;
   bool _value = false;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return KeyboardDismissOnTap(
@@ -85,6 +90,7 @@ class _LoginState extends State<Login> {
                                 //  margin: EdgeInsets.only(left: 5),
                                 child: TextField(
                                     obscureText: _isObscure,
+                                    controller: _emailController,
                                     decoration: const InputDecoration(
                                       border: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
@@ -109,6 +115,7 @@ class _LoginState extends State<Login> {
                                 width: 350,
                                 child: TextField(
                                     obscureText: _isObscure,
+                                    controller: _passwordController,
                                     decoration: InputDecoration(
                                       border: const OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
@@ -127,14 +134,16 @@ class _LoginState extends State<Login> {
                               ))
                             ]),
                         const SizedBox(height: 25),
-                        Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                          Text('Forgotten password?',
-                              style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.blue[900])),
-                        ]),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text('Forgotten password?',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.blue[900])),
+                            ]),
                         const SizedBox(
                           height: 10,
                         ),
@@ -159,9 +168,11 @@ class _LoginState extends State<Login> {
                         Center(
                           child: Column(children: [
                             ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  createAccount();
+                                },
                                 style: ElevatedButton.styleFrom(
-                                    primary: Colors.blue[900],
+                                    backgroundColor: Colors.blue[900],
                                     fixedSize: const Size(350, 50),
                                     shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
@@ -230,5 +241,31 @@ class _LoginState extends State<Login> {
             ),
           )),
     );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future createAccount() async {
+    try {
+      final Dio dio = Dio();
+      log(_emailController.text);
+      log(_passwordController.text);
+      final response = await dio
+          .post('https://bookstore.toolsqa.com/Account/V1/User', data: {
+        'userName': _emailController.text,
+        'password': _passwordController.text
+      });
+      log(response.toString());
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar( const SnackBar(
+        content: Text('An error occured'),
+      ));
+      log(e.toString());
+    }
   }
 }
