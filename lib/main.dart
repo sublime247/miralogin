@@ -260,11 +260,34 @@ class _LoginState extends State<Login> {
         'userName': _emailController.text,
         'password': _passwordController.text
       });
+      // return response;
       log(response.toString());
+      if (response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Account created'),
+        ));
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('An error occured'),
+        ));
+      }
+      authenticate();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar( const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('An error occured'),
       ));
+      log(e.toString());
+    }
+  }
+  Future authenticate() async{
+    try{
+      final Dio dio = Dio();
+      final response = await dio.post('https://bookstore.toolsqa.com/Account/V1/GenerateToken', data: {
+        'userName': _emailController.text,
+        'password': _passwordController.text
+      });
+      log(response.toString());
+    }catch(e){
       log(e.toString());
     }
   }
