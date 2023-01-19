@@ -15,16 +15,13 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   var _isObscure = true;
   bool _value = false;
-  late final TextEditingController _userNameController;
-  late final TextEditingController _passwordController;
-  late final GlobalKey<FormState> _formKey;
-  late final LoginProvider _loginProvider;
+   final TextEditingController _userNameController = TextEditingController();
+   final TextEditingController _passwordController = TextEditingController();
+   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late  LoginProvider _loginProvider;
   @override
   void initState() {
-    _userNameController = TextEditingController();
-    _passwordController = TextEditingController();
-    _formKey = GlobalKey<FormState>();
-    _loginProvider = LoginProvider()
+        _loginProvider = LoginProvider()
       ..addListener(() {
         final state = _loginProvider.currentState;
         if (state is LoginStateLoaded) {
@@ -208,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                                   BuildContext context,
                                   LoginProvider provider,
                                 ) =>
-                                    provider.currentState,
+                                    _loginProvider.currentState,
                                 builder:
                                     (context, LoginState state, Widget? child) {
                                   return ElevatedButton(

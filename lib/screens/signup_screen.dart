@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:miralogin/screens/login_screen.dart';
+
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
 
@@ -13,16 +15,9 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   var _isObscure = true;
   bool _value = false;
-  late final TextEditingController _userNameController;
-  late final TextEditingController _passwordController;
-  late final GlobalKey<FormState> _formKey;
-  @override
-  void initState() {
-    _userNameController = TextEditingController();
-    _passwordController = TextEditingController();
-    _formKey = GlobalKey<FormState>();
-    super.initState();
-  }
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -250,15 +245,20 @@ class _SignUpState extends State<SignUp> {
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.grey)),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 5.0),
-                                  child: Text('Log in',
-                                      style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.blue[900])),
-                                )
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginPage()));
+                                    },
+                                    child: Text('Log in',
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.blue[900])))
                               ]),
                         ]),
                   ),
@@ -295,7 +295,6 @@ class _SignUpState extends State<SignUp> {
           content: Text('An error occured'),
         ));
       }
-  
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('An error occured'),
@@ -303,6 +302,4 @@ class _SignUpState extends State<SignUp> {
       log(e.toString());
     }
   }
-
-  
 }

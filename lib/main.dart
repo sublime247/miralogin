@@ -2,6 +2,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:miralogin/screens/login_screen.dart';
+import 'package:miralogin/screens/signup_screen.dart';
 // import 'package:miralogin/screens/signup_screen.dart';
 
 void main() {
@@ -11,6 +12,6 @@ void main() {
             useInheritedMediaQuery: true,
             locale: DevicePreview.locale(context),
             builder: DevicePreview.appBuilder,
-            home: const LoginPage(),
+            home: const SignUp(),
           )));
 }

@@ -15,7 +15,8 @@ class LoginProvider extends ChangeNotifier {
       _emit(LoginStateLoading());
       final dio = Dio();
       final response = await dio
-          .post('https://bookstore.demoqa.com/Account/v1/GenerateToken', data: {
+          .post('https://bookstore.demoqa.com/Account/v1/GenerateToken', 
+          data: {
         "userName": username,
         "password": password
       });
